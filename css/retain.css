@@ -5,9 +5,16 @@
 .new-note-form {
     margin-bottom: 15px;
 }
+
+.reverse {
+    width: 14%;
+    height: 20px;
+    display: inline-block;
+}
+
 .new-note-content {
-    width:100%;
-    display: block;
+    width:85%;
+    display: inline-block;
     font-size: 1.3em;
 }
 

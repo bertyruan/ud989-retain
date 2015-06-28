@@ -20,44 +20,52 @@ $(function(){
     var octopus = {
         addNewNote: function(noteStr) {
             model.add({
-                content: noteStr
+                content: noteStr,
+                date: Date()
             });
             view.render();
         },
 
-        getNotes: function() {
-            return model.getAllNotes();
+        getNotes: function(isReverse) {
+            if(isReverse)
+                return model.getAllNotes().reverse();
+            else
+                return model.getAllNotes();
         },
 
-        init: function() {
+        init: function(isReverse) {
             model.init();
-            view.init();
+            view.init(isReverse);
         }
     };
 
 
     var view = {
-        init: function() {
+        init: function(isReverse) {
             this.noteList = $('#notes');
             var newNoteForm = $('#new-note-form');
             var newNoteContent = $('#new-note-content');
             newNoteForm.submit(function(e){
                 octopus.addNewNote(newNoteContent.val());
+                //allows you to continuously add data without having to click on the input box. pretty cool I'll say.
                 newNoteContent.val('');
                 e.preventDefault();
             });
-            view.render();
+            view.render(isReverse);
         },
-        render: function(){
+        render: function(isReverse){
             var htmlStr = '';
-            octopus.getNotes().forEach(function(note){
+            var reverseIt = $('#reverse');
+            reverseIt.click(function(e){
+                view.render(!isReverse);
+            });
+            octopus.getNotes(isReverse).forEach(function(note){
                 htmlStr += '<li class="note">'+
-                        note.content +
-                    '</li>';
+                        note.content + "<span class='note-date'>" + note.date + "</span>" + '</li>';
             });
             this.noteList.html( htmlStr );
         }
     };
 
-    octopus.init();
+    octopus.init(false);
 });
